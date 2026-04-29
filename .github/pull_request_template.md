@@ -1,23 +1,45 @@
-## What
+## 📋 Descrição
 
-Breve descrição do que esse PR faz.
+<!-- Descreva resumidamente o que foi feito neste PR -->
 
-## Why
+## 🔗 Issue relacionada
 
-Contexto / link da issue: Closes #XX
+Closes #[número da issue]
 
-## How
+<!-- Use "Closes", "Fixes" ou "Resolves" para fechar a issue automaticamente ao fazer merge -->
+<!-- Exemplos:
+  Closes #42
+  Fixes #42
+  Resolves #42
+-->
 
-Decisões técnicas relevantes (3-5 bullets).
+## 🔄 Tipo de mudança
 
-## Screenshots
+- [ ] 🐛 Bug fix
+- [ ] ✨ Nova feature
+- [ ] 💥 Breaking change
+- [ ] 📝 Documentação
+- [ ] ♻️ Refatoração
+- [ ] 🎨 Estilo / UI
+- [ ] ⚡ Performance
+- [ ] 🧪 Testes
 
-(se UI)
+## 🧪 Como testar
 
-## Checklist
+<!-- Passo a passo para testar as mudanças -->
 
-- [ ] Testes adicionados/atualizados
-- [ ] Type-check passa
-- [ ] Lint passa
-- [ ] Acessibilidade verificada (navegação por teclado, contraste)
-- [ ] Decisões importantes documentadas em DECISIONS.md
+1.
+2.
+3.
+
+## ✅ Checklist
+
+- [ ] Meu código segue o padrão do projeto
+- [ ] Revisei meu próprio código
+- [ ] Adicionei/atualizei testes
+- [ ] Os testes existentes passam localmente
+- [ ] Atualizei a documentação (se necessário)
+
+## 📸 Screenshots (se aplicável)
+
+<!-- Cole prints ou gifs aqui -->
