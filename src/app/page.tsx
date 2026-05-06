@@ -1,12 +1,28 @@
+import { redirect } from 'next/navigation';
+import { auth, signOut } from '@/lib/auth/auth';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Dialog, DialogClose } from '@/components/ui/Dialog';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+  if (!session) redirect('/login');
+
   return (
     <div className="grid gap-300 p-400">
+      <form
+        action={async () => {
+          'use server';
+          await signOut({ redirectTo: '/login' });
+        }}
+      >
+        <Button type="submit" variant="secondary" className="w-auto px-400">
+          Logout (test)
+        </Button>
+      </form>
+
       <Button variant="primary">Placeholder</Button>
       <Button variant="secondary">Placeholder</Button>
       <Button variant="tertiary">Placeholder</Button>
@@ -14,30 +30,12 @@ export default function Home() {
       <Select
         label="Category"
         options={[
-          {
-            label: 'Latest',
-            value: 'latest',
-          },
-          {
-            label: 'Oldest',
-            value: 'oldest',
-          },
-          {
-            label: 'A to Z',
-            value: 'a-z',
-          },
-          {
-            label: 'Z to A',
-            value: 'z-a',
-          },
-          {
-            label: 'Highest',
-            value: 'highest',
-          },
-          {
-            label: 'Lowest',
-            value: 'lowest',
-          },
+          { label: 'Latest', value: 'latest' },
+          { label: 'Oldest', value: 'oldest' },
+          { label: 'A to Z', value: 'a-z' },
+          { label: 'Z to A', value: 'z-a' },
+          { label: 'Highest', value: 'highest' },
+          { label: 'Lowest', value: 'lowest' },
         ]}
         placeholder="Select a category"
       />
