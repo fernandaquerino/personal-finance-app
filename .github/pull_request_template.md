@@ -1,32 +1,32 @@
-## 📋 Descrição
+## 📋 Description
 
-<!-- Descreva resumidamente o que foi feito neste PR -->
+<!-- Briefly describe what was done in this PR -->
 
-## 🔗 Issue relacionada
+## 🔗 Related issue
 
-Closes #[número da issue]
+Closes #[issue number]
 
-<!-- Use "Closes", "Fixes" ou "Resolves" para fechar a issue automaticamente ao fazer merge -->
-<!-- Exemplos:
+<!-- Use "Closes", "Fixes" or "Resolves" to automatically close the issue on merge -->
+<!-- Examples:
   Closes #42
   Fixes #42
   Resolves #42
 -->
 
-## 🔄 Tipo de mudança
+## 🔄 Type of change
 
 - [ ] 🐛 Bug fix
-- [ ] ✨ Nova feature
+- [ ] ✨ New feature
 - [ ] 💥 Breaking change
-- [ ] 📝 Documentação
-- [ ] ♻️ Refatoração
-- [ ] 🎨 Estilo / UI
+- [ ] 📝 Documentation
+- [ ] ♻️ Refactor
+- [ ] 🎨 Style / UI
 - [ ] ⚡ Performance
-- [ ] 🧪 Testes
+- [ ] 🧪 Tests
 
-## 🧪 Como testar
+## 🧪 How to test
 
-<!-- Passo a passo para testar as mudanças -->
+<!-- Step-by-step instructions to test the changes -->
 
 1.
 2.
@@ -34,12 +34,12 @@ Closes #[número da issue]
 
 ## ✅ Checklist
 
-- [ ] Meu código segue o padrão do projeto
-- [ ] Revisei meu próprio código
-- [ ] Adicionei/atualizei testes
-- [ ] Os testes existentes passam localmente
-- [ ] Atualizei a documentação (se necessário)
+- [ ] My code follows the project conventions
+- [ ] I reviewed my own code
+- [ ] I added / updated tests
+- [ ] Existing tests pass locally
+- [ ] I updated the documentation (if applicable)
 
-## 📸 Screenshots (se aplicável)
+## 📸 Screenshots (if applicable)
 
-<!-- Cole prints ou gifs aqui -->
+<!-- Paste screenshots or gifs here -->
