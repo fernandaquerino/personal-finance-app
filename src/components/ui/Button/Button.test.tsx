@@ -18,7 +18,7 @@ describe('Button', () => {
     it('applies secondary variant classes', () => {
       render(<Button variant="secondary">Secondary</Button>);
       const button = screen.getByRole('button');
-      expect(button).toHaveClass('border', 'border-grey-900', 'bg-transparent');
+      expect(button).toHaveClass('border', 'border-transparent', 'bg-beige-100');
     });
 
     it('applies tertiary variant classes', () => {
