@@ -66,13 +66,7 @@ export function Input({
           {...props}
         />
         {icon && (
-          <span
-            aria-hidden="true"
-            className={cn(
-              'pointer-events-none absolute right-300',
-              disabled ? 'text-grey-300' : 'text-grey-500'
-            )}
-          >
+          <span className={cn('absolute right-300', disabled ? 'text-grey-300' : 'text-grey-500')}>
             {icon}
           </span>
         )}
