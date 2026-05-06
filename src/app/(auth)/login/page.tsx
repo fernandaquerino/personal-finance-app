@@ -3,7 +3,7 @@ import { LoginForm } from './LoginForm';
 
 export default function LoginPage() {
   return (
-    <main className="bg-beige-100 flex min-h-screen items-center justify-center p-400 lg:p-800">
+    <main className="bg-beige-100 flex min-h-screen items-center justify-center p-500">
       <div className="grid w-full max-w-[75rem] grid-cols-2 items-center gap-[140]">
         {/* Left panel — taller than the form card */}
         <div
