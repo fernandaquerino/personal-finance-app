@@ -1,26 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 @import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* ── Reset Tailwind defaults ─────────────────────────────── */
+  --color-*: initial;
+  --font-*: initial;
+  --spacing-*: initial;
+
+  /* ── Font ────────────────────────────────────────────────── */
+  --font-sans: 'Public Sans', sans-serif;
+
+  /* ── Colors: Neutrals ────────────────────────────────────── */
+  --color-beige-500: #98908b;
+  --color-beige-100: #f8f4f0;
+  --color-grey-900: #201f24;
+  --color-grey-500: #696868;
+  --color-grey-300: #b3b3b3;
+  --color-grey-100: #f2f2f2;
+  --color-white: #ffffff;
+
+  /* ── Colors: Accents ─────────────────────────────────────── */
+  --color-green: #277c78;
+  --color-yellow: #f2cdac;
+  --color-cyan: #82c9d7;
+  --color-navy: #626070;
+  --color-red: #c94736;
+  --color-purple-500: #826cb0;
+  --color-purple-200: #af81ba;
+  --color-turquoise: #597c7c;
+  --color-brown: #93674f;
+  --color-magenta: #934f6f;
+  --color-blue: #3f82b2;
+  --color-navy-grey: #97a0ac;
+  --color-army-green: #7f9161;
+  --color-gold: #cab361;
+  --color-orange: #be6c49;
+
+  /* ── Spacing ─────────────────────────────────────────────── */
+  --spacing-0: 0px;
+  --spacing-100: 0.25rem; /* 4px */
+  --spacing-200: 0.5rem; /* 8px */
+  --spacing-300: 0.75rem; /* 12px */
+  --spacing-400: 1rem; /* 16px */
+  --spacing-500: 1.25rem; /* 20px */
+  --spacing-600: 1.5rem; /* 24px */
+  --spacing-800: 2rem; /* 32px */
+  --spacing-1000: 2.5rem; /* 40px */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Typography presets ──────────────────────────────────────── */
+@utility text-preset-1 {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@utility text-preset-2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+@utility text-preset-3 {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+@utility text-preset-4 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+@utility text-preset-4-bold {
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+@utility text-preset-5 {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+@utility text-preset-5-bold {
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+/* ── Base ────────────────────────────────────────────────────── */
+@layer base {
+  body {
+    color: var(--color-grey-900);
+    background-color: var(--color-grey-100);
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
