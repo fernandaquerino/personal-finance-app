@@ -93,8 +93,41 @@
 
 /* ── Base ────────────────────────────────────────────────────── */
 @layer base {
+  html {
+    height: 100%;
+  }
+
   body {
+    min-height: 100%;
+    font-family: var(--font-sans);
+    font-size: 0.875rem; /* 14px — preset-4 como padrão de texto corrido */
+    line-height: 1.5;
     color: var(--color-grey-900);
     background-color: var(--color-grey-100);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  img,
+  picture,
+  video,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
   }
 }
