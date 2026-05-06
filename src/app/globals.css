@@ -100,10 +100,10 @@
   body {
     min-height: 100%;
     font-family: var(--font-sans);
-    font-size: 0.875rem; /* 14px — preset-4 como padrão de texto corrido */
+    font-size: 0.875rem;
     line-height: 1.5;
     color: var(--color-grey-900);
-    background-color: var(--color-grey-100);
+    background-color: var(--color-beige-100);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
