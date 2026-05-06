@@ -13,7 +13,7 @@ type CardProps = {
 
 export function Card({ title, children, action, className = '' }: CardProps) {
   return (
-    <section className={`rounded-xl bg-white p-800 ${className}`}>
+    <section aria-label={title} className={`rounded-xl bg-white p-800 ${className}`}>
       <header className="mb-500 flex items-center justify-between">
         <h2 className="text-preset-2 text-grey-900">{title}</h2>
 
