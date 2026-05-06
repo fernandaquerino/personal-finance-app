@@ -8,6 +8,7 @@ const buttonVariants = cva(
     'transition-colors duration-150',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
     'disabled:pointer-events-none disabled:cursor-not-allowed',
+    'w-full',
   ],
   {
     variants: {
