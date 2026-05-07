@@ -1,4 +1,4 @@
-import type { Transaction } from "@/generated/prisma/models";
+import type { TransactionModel as Transaction } from "@/generated/prisma/models/Transaction";
 import { formatCurrency, formatDate, getInitials } from "@/lib/format";
 import { cn } from "@/lib/cn";
 
