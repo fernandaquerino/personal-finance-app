@@ -60,9 +60,9 @@ describe('LoginForm', () => {
       expect(screen.getByRole('button', { name: /github/i })).toBeInTheDocument();
     });
 
-    it('renders the sign up link pointing to /register', () => {
+    it('renders the sign up link pointing to /signup', () => {
       render(<LoginForm />);
-      expect(screen.getByRole('link', { name: 'Sign Up' })).toHaveAttribute('href', '/register');
+      expect(screen.getByRole('link', { name: 'Sign Up' })).toHaveAttribute('href', '/signup');
     });
   });
 
