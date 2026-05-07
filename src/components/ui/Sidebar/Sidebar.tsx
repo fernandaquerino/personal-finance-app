@@ -1,62 +1,119 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { OverviewIcon } from "../icons/OverviewIcon";
-import { TransactionsIcon } from "../icons/TransactionsIcon";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/cn";
 import { BudgetsIcon } from "../icons/BudgetsIcon";
+import { MinimizeMenuIcon } from "../icons/MinimizeMenuIcon";
+import { OverviewIcon } from "../icons/OverviewIcon";
 import { PotsIcon } from "../icons/PotsIcon";
 import { RecurringBillsIcon } from "../icons/RecurringBillsIcon";
+import { TransactionsIcon } from "../icons/TransactionsIcon";
+
+const navItems = [
+  { href: "/", label: "Overview", Icon: OverviewIcon },
+  { href: "/transactions", label: "Transactions", Icon: TransactionsIcon },
+  { href: "/budgets", label: "Budgets", Icon: BudgetsIcon },
+  { href: "/pots", label: "Pots", Icon: PotsIcon },
+  {
+    href: "/recurring-bills",
+    label: "Recurring Bills",
+    Icon: RecurringBillsIcon,
+  },
+];
 
 export function Sidebar() {
+  const pathname = usePathname();
+  const [isMinimized, setIsMinimized] = useState(false);
+
   return (
-    <nav className="bg-grey-900 flex h-screen min-w-[300] flex-col rounded-r-2xl pr-600">
-      <Link href="/" className="block pt-1000 pb-[64] pl-800">
-        <Image src="/images/logo.png" alt="finance" width={120} height={22} />
-      </Link>
-      <Link
-        href="/"
-        className="hover:bg-beige-100 hover:border-l-green group flex gap-400 rounded-r-xl border-l-4 border-l-transparent px-800 py-400"
-      >
-        <OverviewIcon className="text-grey-300 group-hover:text-green" />
-        <span className="text-preset-3 text-grey-300 group-hover:text-grey-900">
-          Overview
-        </span>
-      </Link>
-      <Link
-        href="/transactions"
-        className="hover:bg-beige-100 hover:border-l-green group flex gap-400 rounded-r-xl border-l-4 border-l-transparent px-800 py-400"
-      >
-        <TransactionsIcon className="text-grey-300 group-hover:text-green" />
-        <span className="text-preset-3 text-grey-300 group-hover:text-grey-900">
-          Transactions
-        </span>
-      </Link>
-      <Link
-        href="/budgets"
-        className="hover:bg-beige-100 hover:border-l-green group flex gap-400 rounded-r-xl border-l-4 border-l-transparent px-800 py-400"
-      >
-        <BudgetsIcon className="text-grey-300 group-hover:text-green" />
-        <span className="text-preset-3 text-grey-300 group-hover:text-grey-900">
-          Budgets
-        </span>
-      </Link>
-      <Link
-        href="/pots"
-        className="hover:bg-beige-100 hover:border-l-green group flex gap-400 rounded-r-xl border-l-4 border-l-transparent px-800 py-400"
-      >
-        <PotsIcon className="text-grey-300 group-hover:text-green" />
-        <span className="text-preset-3 text-grey-300 group-hover:text-grey-900">
-          Pots
-        </span>
-      </Link>
-      <Link
-        href="/recurring-bills"
-        className="hover:bg-beige-100 hover:border-l-green group flex gap-400 rounded-r-xl border-l-4 border-l-transparent px-800 py-400"
-      >
-        <RecurringBillsIcon className="text-grey-300 group-hover:text-green" />
-        <span className="text-preset-3 text-grey-300 group-hover:text-grey-900">
-          Recurring Bills
-        </span>
-      </Link>
+    <nav
+      className={cn(
+        "bg-grey-900 hidden h-screen flex-col justify-between overflow-hidden rounded-r-2xl pb-1000 transition-[width] duration-300 ease-in-out lg:flex",
+        isMinimized ? "w-auto" : "w-[300]",
+        isMinimized ? "pr-200" : "pr-600",
+      )}
+    >
+      <div>
+        <Link
+          href="/"
+          className="relative block h-[22px] pt-1000 pb-[64] pl-800"
+        >
+          <Image
+            src="/images/logo.png"
+            alt="finance"
+            width={120}
+            height={22}
+            className={cn(
+              "absolute transition-opacity duration-300",
+              isMinimized ? "opacity-0" : "opacity-100",
+            )}
+          />
+          <Image
+            src="/images/mini-logo.png"
+            alt=""
+            width={50}
+            height={22}
+            className={cn(
+              "absolute left-0 transition-opacity duration-300",
+              isMinimized ? "opacity-100" : "opacity-0",
+            )}
+          />
+        </Link>
+        {navItems.map(({ href, label, Icon }) => {
+          const isActive = pathname === href;
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={cn(
+                "group flex gap-400 rounded-r-xl border-l-4 px-400 py-400 pr-0 transition-colors duration-200",
+                isActive
+                  ? "bg-beige-100 border-l-green"
+                  : "border-l-transparent",
+              )}
+            >
+              <Icon
+                className={cn(
+                  isActive
+                    ? "text-green"
+                    : "text-grey-300 group-hover:text-grey-100",
+                )}
+              />
+              {!isMinimized && (
+                <span
+                  className={cn(
+                    "text-preset-3",
+                    isActive
+                      ? "text-grey-900"
+                      : "text-grey-300 group-hover:text-grey-100",
+                  )}
+                >
+                  {label}
+                </span>
+              )}
+            </Link>
+          );
+        })}
+      </div>
+      <div className={cn(isMinimized ? "p-400" : "p-800")}>
+        <button
+          onClick={() => setIsMinimized((prev) => !prev)}
+          className="text-preset-3 text-grey-300 hover:text-grey-100 flex cursor-pointer items-center gap-400 transition-colors duration-200"
+        >
+          <span
+            className={cn(
+              "transition-transform duration-300",
+              isMinimized ? "rotate-180" : "rotate-0",
+            )}
+          >
+            <MinimizeMenuIcon />
+          </span>
+          {!isMinimized && "Minimize Menu"}
+        </button>
+      </div>
     </nav>
   );
 }
