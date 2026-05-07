@@ -13,7 +13,7 @@ import { signUpWithCredentials } from './actions';
 
 const schema = z.object({
   name: z.string().min(1, { message: 'Name is required.' }),
-  email: z.string().email({ message: 'Please enter a valid email.' }),
+  email: z.string().check(z.email({ message: 'Please enter a valid email.' })),
   password: z.string().min(8, { message: 'Password must be at least 8 characters.' }),
 });
 
@@ -30,6 +30,7 @@ export function SignUpForm() {
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
+    mode: 'onBlur',
   });
 
   function onSubmit(data: FormValues) {

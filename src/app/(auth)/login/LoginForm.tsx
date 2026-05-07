@@ -13,7 +13,7 @@ import { GitHubIcon } from '@/components/ui/icons/GitHubIcon';
 import { loginWithCredentials, loginWithGitHub } from './actions';
 
 const schema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email.' }),
+  email: z.string().check(z.email({ message: 'Please enter a valid email.' })),
   password: z.string().min(1, { message: 'Password is required.' }),
 });
 
