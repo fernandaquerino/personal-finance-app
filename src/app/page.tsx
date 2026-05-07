@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/Card";
 import { Dialog, DialogClose } from "@/components/ui/Dialog";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
+import { BottomNav } from "@/components/ui/BottomNav";
 import { Sidebar } from "@/components/ui/Sidebar";
 
 export default async function Home() {
@@ -14,7 +15,8 @@ export default async function Home() {
   return (
     <div className="flex gap-1000">
       <Sidebar />
-      <main className="grid w-full gap-300 p-400">
+      <BottomNav />
+      <main className="grid w-full gap-300 p-400 pb-24 lg:pb-400">
         <form
           action={async () => {
             "use server";
