@@ -68,6 +68,8 @@ export function Sidebar() {
             <Link
               key={href}
               href={href}
+              aria-label={label}
+              aria-current={isActive ? "page" : undefined}
               className={cn(
                 "group flex gap-400 rounded-r-xl border-l-4 px-400 py-400 pr-0 transition-colors duration-200",
                 isActive
