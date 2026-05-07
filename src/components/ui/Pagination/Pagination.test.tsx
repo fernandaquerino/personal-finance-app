@@ -152,9 +152,8 @@ describe("Pagination", () => {
           onPageChange={onPageChange}
         />,
       );
-      await userEvent.click(
-        screen.getAllByRole("button", { name: "Go to page 4" })[0],
-      );
+      const [button] = screen.getAllByRole("button", { name: "Go to page 4" });
+      await userEvent.click(button!);
       expect(onPageChange).toHaveBeenCalledWith(4);
     });
 
