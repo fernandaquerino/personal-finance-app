@@ -35,9 +35,13 @@ export function SignUpForm() {
   function onSubmit(data: FormValues) {
     setServerError(null);
     startTransition(async () => {
-      const result = await signUpWithCredentials(data.name, data.email, data.password);
-      if (result?.error) {
-        setServerError(result.error);
+      try {
+        const result = await signUpWithCredentials(data.name, data.email, data.password);
+        if (result?.error) {
+          setServerError(result.error);
+        }
+      } catch {
+        setServerError('Something went wrong. Please try again.');
       }
     });
   }
