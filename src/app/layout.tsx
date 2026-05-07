@@ -1,9 +1,10 @@
-import type { Metadata } from 'next';
-import './globals.css';
+import type { Metadata } from "next";
+import { QueryProvider } from "@/components/providers/query-provider";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'Personal Finance App',
-  description: 'Personal Finance App',
+  title: "Personal Finance App",
+  description: "Personal Finance App",
 };
 
 export default function RootLayout({
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }
