@@ -12,9 +12,11 @@ export default async function AppLayout({
   if (!session) redirect("/login");
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-screen">
       <Sidebar />
-      <main className="flex-1 pb-24 lg:pb-0">{children}</main>
+      <main className="min-h-0 flex-1 overflow-y-auto pb-[96px] lg:pb-0">
+        {children}
+      </main>
       <BottomNav />
     </div>
   );
