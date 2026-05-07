@@ -1,8 +1,10 @@
-type PotsIconProps = {
+type RecurringBillsIconProps = {
   className?: string;
 };
 
-export function PotsIcon({ className = "" }: PotsIconProps) {
+export function RecurringBillsIcon({
+  className = "",
+}: RecurringBillsIconProps) {
   return (
     <svg
       className={className}
