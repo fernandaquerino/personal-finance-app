@@ -52,7 +52,10 @@ export function Pagination({
   const nextDisabled = currentPage === totalPages;
 
   return (
-    <nav aria-label="Pagination" className="flex items-center gap-200">
+    <nav
+      aria-label="Pagination"
+      className="flex w-full items-center justify-between gap-200"
+    >
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={prevDisabled}
