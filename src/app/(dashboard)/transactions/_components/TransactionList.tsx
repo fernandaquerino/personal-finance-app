@@ -45,9 +45,14 @@ export function TransactionList({ transactions }: Props) {
             <td className="py-400 pr-400">
               <div className="flex items-center gap-400">
                 <Avatar name={transaction.name} />
-                <span className="text-preset-4-bold text-grey-900">
-                  {transaction.name}
-                </span>
+                <div className="flex flex-col">
+                  <span className="text-preset-4-bold text-grey-900">
+                    {transaction.name}
+                  </span>
+                  <span className="text-preset-5 text-grey-500 sm:hidden">
+                    {transaction.category.replace(/([A-Z])/g, " $1").trim()}
+                  </span>
+                </div>
               </div>
             </td>
 
