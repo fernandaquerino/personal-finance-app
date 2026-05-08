@@ -1,6 +1,6 @@
 import type { TransactionModel as Transaction } from "@/generated/prisma/models/Transaction";
-import { formatCurrency, formatDate, getInitials } from "@/lib/format";
 import { cn } from "@/lib/cn";
+import { formatCurrency, formatDate, getInitials } from "@/lib/format";
 
 type Props = {
   transactions: Transaction[];
@@ -19,39 +19,50 @@ export function TransactionList({ transactions }: Props) {
   }
 
   return (
-    <div className="w-full">
-      <div className="border-grey-100 hidden grid-cols-[1fr_auto_auto_auto] gap-400 border-b pb-300 sm:grid">
-        <span className="text-preset-5 text-grey-500">Recipient / Sender</span>
-        <span className="text-preset-5 text-grey-500">Category</span>
-        <span className="text-preset-5 text-grey-500">Transaction Date</span>
-        <span className="text-preset-5 text-grey-500 text-right">Amount</span>
-      </div>
-
-      <ul>
+    <table className="w-full border-collapse">
+      <thead className="hidden sm:table-header-group">
+        <tr className="border-grey-100 border-b">
+          <th className="text-preset-5 text-grey-500 pb-300 text-left font-normal">
+            Recipient / Sender
+          </th>
+          <th className="text-preset-5 text-grey-500 pb-300 text-left font-normal">
+            Category
+          </th>
+          <th className="text-preset-5 text-grey-500 pb-300 text-left font-normal">
+            Transaction Date
+          </th>
+          <th className="text-preset-5 text-grey-500 pb-300 text-right font-normal">
+            Amount
+          </th>
+        </tr>
+      </thead>
+      <tbody>
         {transactions.map((transaction) => (
-          <li
+          <tr
             key={transaction.id}
-            className="border-grey-100 grid grid-cols-[1fr_auto] items-center gap-400 border-b py-400 last:border-none sm:grid-cols-[1fr_auto_auto_auto]"
+            className="border-grey-100 border-b last:border-none"
           >
-            <div className="flex items-center gap-400">
-              <Avatar name={transaction.name} />
-              <span className="text-preset-4-bold text-grey-900">
-                {transaction.name}
-              </span>
-            </div>
+            <td className="py-400 pr-400">
+              <div className="flex items-center gap-400">
+                <Avatar name={transaction.name} />
+                <span className="text-preset-4-bold text-grey-900">
+                  {transaction.name}
+                </span>
+              </div>
+            </td>
 
-            <span className="text-preset-5 text-grey-500 hidden sm:block">
+            <td className="text-preset-5 text-grey-500 hidden py-400 pr-400 sm:table-cell">
               {transaction.category.replace(/([A-Z])/g, " $1").trim()}
-            </span>
+            </td>
 
-            <span className="text-preset-5 text-grey-500 hidden whitespace-nowrap sm:block">
+            <td className="text-preset-5 text-grey-500 hidden py-400 pr-400 whitespace-nowrap sm:table-cell">
               {formatDate(transaction.date)}
-            </span>
+            </td>
 
-            <div className="flex flex-col items-end sm:items-end">
+            <td className="py-400 text-right">
               <span
                 className={cn(
-                  "text-preset-4-bold",
+                  "text-preset-4-bold block",
                   transaction.amount > 0 ? "text-green" : "text-red",
                 )}
               >
@@ -60,11 +71,11 @@ export function TransactionList({ transactions }: Props) {
               <span className="text-preset-5 text-grey-500 sm:hidden">
                 {formatDate(transaction.date)}
               </span>
-            </div>
-          </li>
+            </td>
+          </tr>
         ))}
-      </ul>
-    </div>
+      </tbody>
+    </table>
   );
 }
 
