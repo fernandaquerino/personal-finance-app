@@ -1,32 +1,53 @@
 # Personal Finance App
 
-A full-stack personal finance application built as part of the [Frontend Mentor](https://www.frontendmentor.io/) challenge.
+A full-stack personal finance application for tracking budgets, saving pots,
+transactions, and recurring bills.
 
-**Live demo:** https://personal-finance-app-five-lyart.vercel.app/
+> **Status:** 🚧 In progress (Sprint 2 / 6)
+
+> **Live demo:** https://personal-finance-app-five-lyart.vercel.app/
+
+> Based on the [Frontend Mentor Personal Finance App](https://www.frontendmentor.io/challenges/personal-finance-app-JfjtZgyMt1) challenge.
+> Architecture, backend, and authentication are original implementations.
+
+---
+
+## Stack
+
+| Category     | Technology               | Why                                   |
+| ------------ | ------------------------ | ------------------------------------- |
+| Framework    | Next.js 15 (App Router)  | RSC, server actions, streaming        |
+| Language     | TypeScript (strict)      | End-to-end type safety                |
+| Styling      | Tailwind CSS             | Speed + consistency via design tokens |
+| ORM          | Prisma                   | Type-safe, familiar, great DX         |
+| Database     | PostgreSQL (Neon)        | Serverless, generous free tier        |
+| Auth         | Auth.js v5               | Free, integrates with Prisma          |
+| Client state | TanStack Query           | Optimistic updates                    |
+| Unit tests   | Vitest + Testing Library | Fast, SWC compatible                  |
+| E2E tests    | Playwright               | Multi-browser, great debugger         |
+| CI           | GitHub Actions           | Industry standard, free               |
+| Deploy       | Vercel                   | Zero config for Next.js               |
+
+Every decision is documented in [`docs/DECISIONS.md`](./docs/DECISIONS.md).
+
+---
+
+---
 
 ## Features
 
-- **Overview** — dashboard with balance summary and spending snapshot
-- **Transactions** — transaction history with search, filter and pagination
-- **Budgets** — set monthly budgets per category and track spending
-- **Pots** — savings pots with deposit and withdrawal
-- **Recurring Bills** — track and visualize recurring expenses
-- **Auth** — sign up, sign in and protected routes
+- ✅ Authentication (signup, login, logout)
+- ✅ Overview dashboard with balance, income and expenses summary
+- ✅ Transactions list with search, filter, sort and pagination
+- ✅ Add new transactions
+- ✅ Budgets with CRUD, donut chart and spending progress
+- ✅ Saving pots with CRUD, add and withdraw money
+- ✅ Recurring bills with status (paid, upcoming, due soon)
+- ✅ Fully keyboard navigable
+- ✅ Responsive (mobile, tablet, desktop)
+- ✅ Accessibility audit (Lighthouse score 100)
 
-## Tech Stack
-
-| Layer         | Technology               |
-| ------------- | ------------------------ |
-| Framework     | Next.js 16 (App Router)  |
-| Language      | TypeScript (strict)      |
-| Styling       | Tailwind CSS v4          |
-| Database      | PostgreSQL (Neon)        |
-| ORM           | Prisma                   |
-| Auth          | Auth.js v5               |
-| Data fetching | TanStack Query           |
-| Unit tests    | Vitest + Testing Library |
-| E2E tests     | Playwright               |
-| CI            | GitHub Actions           |
+---
 
 ## Getting Started
 
@@ -38,38 +59,63 @@ A full-stack personal finance application built as part of the [Frontend Mentor]
 ### Setup
 
 ```bash
-# Install dependencies
+# 1. Clone the repo
+git clone https://github.com/fernandaquerino/personal-finance-app.git
+cd personal-finance-app
+
+# 2. Install dependencies
 npm install
 
-# Copy environment variables
+# 3. Set up environment variables
 cp .env.example .env.local
-# Fill in the required values in .env.local
+# Edit .env.local with your DATABASE_URL and AUTH_SECRET
 
-# Run database migrations
+# 4. Run migrations and seed
 npx prisma migrate dev
+npm run db:seed
 
-# Start the development server
+# 5. Start development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+App available at http://localhost:3000.
 
-## Scripts
+### Scripts
 
-```bash
-npm run dev          # Start development server
-npm run build        # Production build
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run type-check   # Run TypeScript compiler check
-npm run format       # Format all files with Prettier
-npm run format:check # Check formatting without writing
-npm test             # Run unit tests with Vitest
-```
+| Script               | Description                  |
+| -------------------- | ---------------------------- |
+| `npm run dev`        | Development server           |
+| `npm run build`      | Production build             |
+| `npm run start`      | Run production build         |
+| `npm run lint`       | ESLint                       |
+| `npm run type-check` | TypeScript check             |
+| `npm run test`       | Unit tests (Vitest)          |
+| `npm run test:e2e`   | E2E tests (Playwright)       |
+| `npm run format`     | Format with Prettier         |
+| `npm run db:seed`    | Seed database with mock data |
 
-## Project Structure
+---
+
+## Architecture
 
 ```
 src/
-└── app/          # Next.js App Router pages and layouts
+├── app/
+│   ├── (auth)/           # login, signup
+│   └── (dashboard)/      # authenticated routes
+│       ├── page.tsx      # overview
+│       ├── transactions/
+│       ├── budgets/
+│       ├── pots/
+│       └── recurring-bills/
+├── components/
+│   ├── ui/               # design system
+│   └── features/         # feature components
+├── lib/
+│   ├── db/               # Prisma client
+│   ├── auth/             # Auth.js config
+│   └── utils/            # helpers
+└── server/
+├── actions/          # server actions
+└── queries/          # read queries
 ```
