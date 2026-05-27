@@ -12,6 +12,24 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Theme {
+  Green
+  Yellow
+  Cyan
+  Navy
+  Red
+  Purple
+  Turquoise
+  Brown
+  Magenta
+  Blue
+  NavyGrey  @map("navy-grey")
+  ArmyGreen @map("army-green")
+  Pink
+  Gold
+  Orange
+}
+
 enum Category {
   Entertainment
   Bills
@@ -37,9 +55,25 @@ model User {
   accounts     Account[]
   sessions     Session[]
   transactions Transaction[]
+  budgets      Budget[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Budget {
+  id       String   @id @default(cuid())
+  category Category
+  maximum  Float
+  theme    Theme
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, category])
 }
 
 model Transaction {
