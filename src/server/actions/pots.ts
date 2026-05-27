@@ -51,3 +51,17 @@ export async function createPot(
   revalidatePath("/pots");
   return { success: true };
 }
+
+export async function deletePot(id: string): Promise<{ success: true }> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  await prisma.pot.delete({
+    where: { id, userId: session.user.id },
+  });
+
+  revalidatePath("/pots");
+  return { success: true };
+}
