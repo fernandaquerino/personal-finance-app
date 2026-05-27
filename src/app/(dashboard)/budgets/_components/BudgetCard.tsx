@@ -4,6 +4,7 @@ import type { Category } from "@/generated/prisma/enums";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { THEME_COLORS } from "@/lib/themes";
 import { formatCurrency, formatDate, getInitials } from "@/lib/format";
+import { BudgetCardActions } from "./BudgetCardActions";
 
 type Transaction = {
   id: string;
@@ -43,6 +44,7 @@ export function BudgetCard({ budget, spent, latestTransactions }: Props) {
           />
           <h2 className="text-preset-2 text-grey-900">{categoryLabel}</h2>
         </div>
+        <BudgetCardActions budgetId={budget.id} />
       </div>
 
       {/* Maximum */}
