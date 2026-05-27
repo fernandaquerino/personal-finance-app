@@ -8,6 +8,7 @@ import { TransactionCategoryFilter } from "./_components/TransactionCategoryFilt
 import { TransactionSort, type SortKey } from "./_components/TransactionSort";
 import { TransactionSortMobile } from "./_components/TransactionSortMobile";
 import { TransactionCategoryFilterMobile } from "./_components/TransactionCategoryFilterMobile";
+import { AddTransactionModal } from "./_components/AddTransactionModal";
 
 const PER_PAGE = 10;
 
@@ -78,7 +79,10 @@ export default async function TransactionsPage({ searchParams }: Props) {
 
   return (
     <div className="p-400 lg:p-1000">
-      <h1 className="text-preset-1 text-grey-900 mb-800">Transactions</h1>
+      <div className="mb-800 flex items-center justify-between">
+        <h1 className="text-preset-1 text-grey-900">Transactions</h1>
+        <AddTransactionModal />
+      </div>
       <div className="rounded-2xl bg-white p-400 lg:p-800">
         <div className="mb-600 flex items-center gap-600">
           <div className="min-w-0 flex-1 sm:max-w-[320px] sm:flex-none lg:w-full">
