@@ -3,20 +3,26 @@
 import { Button } from "@/components/ui/Button";
 import { Dialog } from "@/components/ui/Dialog";
 import { Input } from "@/components/ui/Input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useTransition } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
+import { Select } from "@/components/ui/Select";
 import { THEME_COLORS, THEME_LABELS } from "@/lib/themes";
 import type { Theme } from "@/generated/prisma/enums";
-import { Select } from "@/components/ui/Select";
+import { createPot } from "@/server/actions/pots";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
 
 const formSchema = z.object({
   name: z
     .string()
     .min(1, "Name is required")
     .max(30, "Name must be 30 characters or less"),
-  target: z.string().min(1, "Target is required"),
+  target: z
+    .string()
+    .min(1, "Target is required")
+    .refine((v) => !isNaN(Number(v)), "Must be a valid number")
+    .refine((v) => Number(v) > 0, "Target must be greater than zero"),
   theme: z.string().min(1, "Select a theme"),
 });
 
@@ -27,6 +33,7 @@ type Props = {
 };
 
 export function AddPotModal({ usedThemes }: Props) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -39,19 +46,43 @@ export function AddPotModal({ usedThemes }: Props) {
 
   const {
     register,
+    handleSubmit,
     control,
+    reset,
+    setError,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      target: "",
-      theme: "",
-    },
+    defaultValues: { name: "", target: "", theme: "" },
   });
 
   function handleOpenChange(next: boolean) {
+    if (!next) reset();
     setOpen(next);
+  }
+
+  function onSubmit(data: FormValues) {
+    startTransition(async () => {
+      const result = await createPot({
+        name: data.name,
+        target: Number(data.target),
+        theme: data.theme as Theme,
+      });
+
+      if (result.success) {
+        handleOpenChange(false);
+        router.refresh();
+        return;
+      }
+
+      for (const [field, messages] of Object.entries(
+        result.fieldErrors ?? {},
+      )) {
+        if (messages?.length) {
+          setError(field as keyof FormValues, { message: messages[0] });
+        }
+      }
+    });
   }
 
   return (
@@ -71,7 +102,12 @@ export function AddPotModal({ usedThemes }: Props) {
         </Button>
       }
     >
-      <form className="flex flex-col gap-400 pb-100">
+      <form
+        id="add-pot-form"
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-400 pb-100"
+        noValidate
+      >
         <Input
           label="Pot Name"
           type="text"
