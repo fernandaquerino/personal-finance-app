@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { THEME_COLORS, THEME_LABELS } from "@/lib/themes";
-import type { Theme } from "@/generated/prisma/enums";
+import type { Category, Theme } from "@/generated/prisma/enums";
 import { createBudget } from "@/server/actions/budgets";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
@@ -26,18 +26,23 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-const CATEGORY_OPTIONS = Object.entries(CATEGORY_LABELS).map(
-  ([value, label]) => ({ value, label }),
-);
-
 type Props = {
   usedThemes: Theme[];
+  usedCategories: Category[];
 };
 
-export function AddBudgetModal({ usedThemes }: Props) {
+export function AddBudgetModal({ usedThemes, usedCategories }: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+
+  const categoryOptions = Object.entries(CATEGORY_LABELS).map(
+    ([value, label]) => ({
+      value,
+      label,
+      alreadyUsed: usedCategories.includes(value as Category),
+    }),
+  );
 
   const themeOptions = Object.entries(THEME_LABELS).map(([value, label]) => ({
     value,
@@ -123,7 +128,7 @@ export function AddBudgetModal({ usedThemes }: Props) {
             <Select
               label="Budget Category"
               placeholder="Select a category"
-              options={CATEGORY_OPTIONS}
+              options={categoryOptions}
               value={field.value}
               onValueChange={field.onChange}
               error={errors.category?.message}
