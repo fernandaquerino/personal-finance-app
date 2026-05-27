@@ -7,18 +7,20 @@ import { Select } from "@/components/ui/Select";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { THEME_COLORS, THEME_LABELS } from "@/lib/themes";
 import type { Theme } from "@/generated/prisma/enums";
+import { createBudget } from "@/server/actions/budgets";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
+  category: z.string().min(1, "Select a category"),
   maximum: z
     .string()
-    .min(1, "Amount is required")
+    .min(1, "Maximum is required")
     .refine((v) => !isNaN(Number(v)), "Must be a valid number")
-    .refine((v) => Number(v) !== 0, "Amount cannot be zero"),
-  category: z.string().min(1, "Select a category"),
+    .refine((v) => Number(v) > 0, "Maximum must be greater than zero"),
   theme: z.string().min(1, "Select a theme"),
 });
 
@@ -33,7 +35,9 @@ type Props = {
 };
 
 export function AddBudgetModal({ usedThemes }: Props) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const themeOptions = Object.entries(THEME_LABELS).map(([value, label]) => ({
     value,
@@ -63,6 +67,32 @@ export function AddBudgetModal({ usedThemes }: Props) {
     setOpen(next);
   }
 
+  function onSubmit(data: FormValues) {
+    startTransition(async () => {
+      const result = await createBudget({
+        category: data.category as Parameters<
+          typeof createBudget
+        >[0]["category"],
+        maximum: Number(data.maximum),
+        theme: data.theme as Parameters<typeof createBudget>[0]["theme"],
+      });
+
+      if (result.success) {
+        handleOpenChange(false);
+        router.refresh();
+        return;
+      }
+
+      for (const [field, messages] of Object.entries(
+        result.fieldErrors ?? {},
+      )) {
+        if (messages?.length) {
+          setError(field as keyof FormValues, { message: messages[0] });
+        }
+      }
+    });
+  }
+
   return (
     <Dialog
       open={open}
@@ -75,13 +105,14 @@ export function AddBudgetModal({ usedThemes }: Props) {
       title="Add New Budget"
       description="Choose a category to set a spending budget. These categories can help you monitor spending."
       footer={
-        <Button type="submit" form="add-budget-form">
+        <Button type="submit" form="add-budget-form" loading={isPending}>
           Add Budget
         </Button>
       }
     >
       <form
         id="add-budget-form"
+        onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-400 pb-100"
         noValidate
       >
