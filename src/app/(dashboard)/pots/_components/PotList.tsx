@@ -6,10 +6,12 @@ type Props = {
 };
 
 export function PotList({ pots }: Props) {
+  const usedThemes = pots.map((p) => p.theme);
+
   return (
-    <div className="grid grid-cols-2 gap-600">
+    <div className="grid gap-600 lg:grid-cols-2">
       {pots.map((pot) => (
-        <PotCard pot={pot} key={pot.id} />
+        <PotCard pot={pot} key={pot.id} usedThemes={usedThemes} />
       ))}
     </div>
   );

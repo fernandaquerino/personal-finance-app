@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/Button";
 import type { PotModel as Pot } from "@/generated/prisma/models";
 import { THEME_COLORS } from "@/lib/themes";
+import { PotCardActions } from "./PotCardActions";
+import type { Theme } from "@/generated/prisma/enums";
 
 type Props = {
   pot: Pot;
+  usedThemes: Theme[];
 };
 
 const fmt = (amount: number) =>
@@ -11,7 +14,7 @@ const fmt = (amount: number) =>
     amount,
   );
 
-export function PotCard({ pot }: Props) {
+export function PotCard({ pot, usedThemes }: Props) {
   const { name, theme, target, total } = pot;
   const themeColor = THEME_COLORS[theme];
   const progress = Math.min(100, (total / target) * 100);
@@ -28,6 +31,7 @@ export function PotCard({ pot }: Props) {
           />
           <h2 className="text-preset-2 text-grey-900">{name}</h2>
         </div>
+        <PotCardActions pot={pot} usedThemes={usedThemes} />
       </div>
 
       {/* Total Saved */}
