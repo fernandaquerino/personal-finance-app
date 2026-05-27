@@ -56,6 +56,7 @@ model User {
   sessions     Session[]
   transactions Transaction[]
   budgets      Budget[]
+  pots         Pot[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -84,6 +85,20 @@ model Transaction {
   category  Category
   recurring Boolean  @default(false)
   avatar    String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Pot {
+  id     String @id @default(cuid())
+  name   String
+  target Float
+  total  Float  @default(0)
+  theme  Theme
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
