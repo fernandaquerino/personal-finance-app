@@ -7,6 +7,7 @@ import { THEME_COLORS } from "@/lib/themes";
 import { PotCardActions } from "./PotCardActions";
 import type { Theme } from "@/generated/prisma/enums";
 import { AddMoneyModal } from "./AddMoneyModal";
+import { WithdrawMoneyModal } from "./WithdrawMoneyModal";
 
 type Props = {
   pot: Pot;
@@ -23,6 +24,7 @@ export function PotCard({ pot, usedThemes }: Props) {
   const themeColor = THEME_COLORS[theme];
   const progress = Math.min(100, (total / target) * 100);
   const [addMoneyOpen, setAddMoneyOpen] = useState(false);
+  const [withdrawMoneyOpen, setWithdrawMoneyOpen] = useState(false);
   const isFull = total >= target;
 
   return (
@@ -76,13 +78,21 @@ export function PotCard({ pot, usedThemes }: Props) {
         >
           + Add Money
         </Button>
-        <Button variant="secondary">Withdraw</Button>
+        <Button variant="secondary" onClick={() => setWithdrawMoneyOpen(true)}>
+          Withdraw
+        </Button>
       </div>
 
       <AddMoneyModal
         pot={pot}
         open={addMoneyOpen}
         onOpenChange={setAddMoneyOpen}
+      />
+
+      <WithdrawMoneyModal
+        pot={pot}
+        open={withdrawMoneyOpen}
+        onOpenChange={setWithdrawMoneyOpen}
       />
     </div>
   );
