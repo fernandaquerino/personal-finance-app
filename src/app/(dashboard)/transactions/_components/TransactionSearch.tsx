@@ -44,6 +44,7 @@ export function TransactionSearch() {
       value={value}
       onChange={(e) => setValue(e.target.value)}
       icon={<SearchIcon className="h-4 w-4" />}
+      className="max-w-[320px]"
     />
   );
 }
