@@ -38,7 +38,7 @@ export function TransactionSearch() {
   }, [value]);
 
   return (
-    <div className="w-full max-w-[320px]">
+    <div className="w-full">
       <Input
         aria-label="Search transactions by name"
         placeholder="Search transaction"
