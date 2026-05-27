@@ -4,15 +4,18 @@ import { formatCurrency, formatDate, getInitials } from "@/lib/format";
 
 type Props = {
   transactions: Transaction[];
+  searchTerm?: string;
 };
 
-export function TransactionList({ transactions }: Props) {
+export function TransactionList({ transactions, searchTerm }: Props) {
   if (transactions.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-1000 text-center">
         <p className="text-preset-2 text-grey-500">No transactions found.</p>
         <p className="text-preset-4 text-grey-300 mt-200">
-          Try adjusting your filters or check back later.
+          {searchTerm
+            ? `No results for "${searchTerm}". Try a different name.`
+            : "Try adjusting your filters or check back later."}
         </p>
       </div>
     );
