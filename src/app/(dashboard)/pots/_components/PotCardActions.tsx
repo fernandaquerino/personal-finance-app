@@ -5,6 +5,7 @@ import type { Theme } from "@/generated/prisma/enums";
 import type { PotModel as Pot } from "@/generated/prisma/models";
 import { DropdownMenu } from "@/components/ui/DropdownMenu/DropdownMenu";
 import { DeletePotModal } from "./DeletePotModal";
+import { EditPotModal } from "./EditPotModal";
 
 type Props = {
   pot: Pot;
@@ -49,6 +50,12 @@ export function PotCardActions({ pot, usedThemes }: Props) {
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
         pot={pot}
+      />
+      <EditPotModal
+        open={editOpen}
+        onOpenChange={setEditOpen}
+        pot={pot}
+        usedThemes={usedThemes}
       />
     </>
   );
