@@ -5,10 +5,7 @@ import type { BudgetModel as Budget } from "@/generated/prisma/models";
 import type { Category, Theme } from "@/generated/prisma/enums";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { THEME_COLORS } from "@/lib/themes";
-const fmt = (amount: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-    amount,
-  );
+import { formatAmount } from "@/lib/format";
 
 type ChartEntry = {
   category: Category;
@@ -30,7 +27,7 @@ function CustomTooltip({ active, payload }: TooltipProps) {
   return (
     <div className="bg-grey-900 rounded-lg px-300 py-200 shadow-md">
       <p className="text-preset-5-bold text-white">{item.label}</p>
-      <p className="text-preset-5 text-white">{fmt(item.spent)}</p>
+      <p className="text-preset-5 text-white">{formatAmount(item.spent)}</p>
     </div>
   );
 }
@@ -91,9 +88,11 @@ export function BudgetDonutChart({ budgets, spentByCategory }: Props) {
 
         {/* Center text */}
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-100">
-          <p className="text-preset-1 text-grey-900">{fmt(totalSpent)}</p>
+          <p className="text-preset-1 text-grey-900">
+            {formatAmount(totalSpent)}
+          </p>
           <p className="text-preset-5 text-grey-500">
-            of {fmt(totalLimit)} limit
+            of {formatAmount(totalLimit)} limit
           </p>
         </div>
       </div>
@@ -116,10 +115,10 @@ export function BudgetDonutChart({ budgets, spentByCategory }: Props) {
             </div>
             <div className="flex items-center gap-200">
               <span className="text-preset-4-bold text-grey-900">
-                {fmt(item.spent)}
+                {formatAmount(item.spent)}
               </span>
               <span className="text-preset-5 text-grey-500">
-                of {fmt(item.maximum)}
+                of {formatAmount(item.maximum)}
               </span>
             </div>
           </li>

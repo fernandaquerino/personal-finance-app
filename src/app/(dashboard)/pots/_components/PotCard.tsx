@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import type { PotModel as Pot } from "@/generated/prisma/models";
 import { THEME_COLORS } from "@/lib/themes";
+import { formatAmount } from "@/lib/format";
 import { PotCardActions } from "./PotCardActions";
 import type { Theme } from "@/generated/prisma/enums";
 import { AddMoneyModal } from "./AddMoneyModal";
@@ -13,11 +14,6 @@ type Props = {
   pot: Pot;
   usedThemes: Theme[];
 };
-
-const fmt = (amount: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-    amount,
-  );
 
 export function PotCard({ pot, usedThemes }: Props) {
   const { name, theme, target, total } = pot;
@@ -45,7 +41,7 @@ export function PotCard({ pot, usedThemes }: Props) {
       {/* Total Saved */}
       <div className="mb-400 flex items-center justify-between">
         <p className="text-preset-4 text-gray-500">Total Saved</p>
-        <p className="text-preset-1 text-grey-900">{fmt(total)}</p>
+        <p className="text-preset-1 text-grey-900">{formatAmount(total)}</p>
       </div>
 
       {/* Progress bar */}
@@ -65,7 +61,9 @@ export function PotCard({ pot, usedThemes }: Props) {
           <p className="text-preset-5-bold text-gray-500">
             {progress.toFixed(2)}%
           </p>
-          <p className="text-preset-5 text-grey-500">Target of {fmt(target)}</p>
+          <p className="text-preset-5 text-grey-500">
+            Target of {formatAmount(target)}
+          </p>
         </div>
       </div>
 

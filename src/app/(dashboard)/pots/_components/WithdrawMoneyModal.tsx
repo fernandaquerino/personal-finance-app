@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/Input";
 import { THEME_COLORS } from "@/lib/themes";
 import type { PotModel as Pot } from "@/generated/prisma/models";
 import { withdrawFromPot } from "@/server/actions/pots";
+import { formatAmount } from "@/lib/format";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -21,11 +22,6 @@ const formSchema = z.object({
 });
 
 type FormValues = z.infer<typeof formSchema>;
-
-const fmt = (amount: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-    amount,
-  );
 
 type Props = {
   pot: Pot;
@@ -108,7 +104,9 @@ export function WithdrawMoneyModal({ pot, open, onOpenChange }: Props) {
         <div>
           <div className="mb-300 flex items-center justify-between">
             <p className="text-preset-4 text-grey-500">New Amount</p>
-            <p className="text-preset-1 text-grey-900">{fmt(newTotal)}</p>
+            <p className="text-preset-1 text-grey-900">
+              {formatAmount(newTotal)}
+            </p>
           </div>
 
           <div className="bg-beige-100 mb-300 h-[8px] w-full overflow-hidden rounded-full">
@@ -143,7 +141,7 @@ export function WithdrawMoneyModal({ pot, open, onOpenChange }: Props) {
               {newProgress.toFixed(2)}%
             </p>
             <p className="text-preset-5 text-grey-500">
-              Target of {fmt(pot.target)}
+              Target of {formatAmount(pot.target)}
             </p>
           </div>
         </div>
