@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth/auth";
 import { prisma } from "@/lib/db/prisma";
 import { AddPotModal } from "./_components/AddPotModal";
+import { PotList } from "./_components/PotList";
 
 export default async function PotsPage() {
   const session = await auth();
@@ -19,7 +20,7 @@ export default async function PotsPage() {
         <h1 className="text-preset-1 text-grey-900">Pots</h1>
         <AddPotModal usedThemes={usedThemes} />
       </div>
-      {pots.length === 0 && (
+      {pots.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-400 rounded-2xl bg-white px-400 py-[80px] text-center">
           <svg
             width="48"
@@ -42,6 +43,8 @@ export default async function PotsPage() {
             </p>
           </div>
         </div>
+      ) : (
+        <PotList pots={pots} />
       )}
     </div>
   );
