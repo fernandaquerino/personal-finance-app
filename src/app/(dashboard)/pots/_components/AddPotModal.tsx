@@ -10,7 +10,7 @@ import { createPot } from "@/server/actions/pots";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -55,6 +55,9 @@ export function AddPotModal({ usedThemes }: Props) {
     resolver: zodResolver(formSchema),
     defaultValues: { name: "", target: "", theme: "" },
   });
+
+  const nameValue = useWatch({ control, name: "name" });
+  const charsLeft = 30 - (nameValue?.length ?? 0);
 
   function handleOpenChange(next: boolean) {
     if (!next) reset();
@@ -112,7 +115,9 @@ export function AddPotModal({ usedThemes }: Props) {
           label="Pot Name"
           type="text"
           placeholder="e.g. Rainy Days"
+          helperText={`${charsLeft} characters left`}
           error={errors.name?.message}
+          maxLength={30}
           {...register("name")}
         />
         <Input
