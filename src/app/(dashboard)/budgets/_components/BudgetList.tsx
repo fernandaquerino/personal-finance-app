@@ -1,5 +1,5 @@
 import type { BudgetModel as Budget } from "@/generated/prisma/models";
-import type { Category } from "@/generated/prisma/enums";
+import type { Category, Theme } from "@/generated/prisma/enums";
 import { BudgetCard } from "./BudgetCard";
 
 type Transaction = {
@@ -21,6 +21,8 @@ export function BudgetList({
   spentByCategory,
   latestByCategory,
 }: Props) {
+  const usedThemes = budgets.map((b) => b.theme as Theme);
+
   return (
     <div className="flex flex-col gap-300">
       {budgets.map((budget) => (
@@ -31,6 +33,7 @@ export function BudgetList({
           latestTransactions={
             latestByCategory[budget.category as Category] ?? []
           }
+          usedThemes={usedThemes}
         />
       ))}
     </div>

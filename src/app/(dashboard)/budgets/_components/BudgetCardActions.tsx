@@ -1,14 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import type { Theme } from "@/generated/prisma/enums";
+import type { BudgetModel as Budget } from "@/generated/prisma/models";
 import { DropdownMenu } from "@/components/ui/DropdownMenu/DropdownMenu";
+import { EditBudgetModal } from "./EditBudgetModal";
 
 type Props = {
-  budgetId: string;
+  budget: Budget;
+  usedThemes: Theme[];
 };
 
-export function BudgetCardActions({ budgetId: _budgetId }: Props) {
-  const [_editOpen, setEditOpen] = useState(false);
+export function BudgetCardActions({ budget, usedThemes }: Props) {
+  const [editOpen, setEditOpen] = useState(false);
   const [_deleteOpen, setDeleteOpen] = useState(false);
 
   return (
@@ -41,7 +45,12 @@ export function BudgetCardActions({ budgetId: _budgetId }: Props) {
           },
         ]}
       />
-      {/* EditBudgetModal — FIN-54 */}
+      <EditBudgetModal
+        budget={budget}
+        usedThemes={usedThemes}
+        open={editOpen}
+        onOpenChange={setEditOpen}
+      />
       {/* DeleteBudgetModal — FIN-55 */}
     </>
   );
