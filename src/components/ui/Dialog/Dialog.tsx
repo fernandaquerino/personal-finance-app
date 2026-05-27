@@ -31,7 +31,7 @@ export function Dialog({
       {trigger && <RadixDialog.Trigger asChild>{trigger}</RadixDialog.Trigger>}
       <DialogContent className={contentClassName}>
         <DialogHeader>
-          <RadixDialog.Title className="text-preset-2 text-grey-900 pr-800">
+          <RadixDialog.Title className="text-preset-1 text-grey-900 pr-800">
             {title}
           </RadixDialog.Title>
           {description && (
