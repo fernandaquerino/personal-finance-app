@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
+import { signOutAction } from "@/server/actions/auth";
 import { BudgetsIcon } from "../icons/BudgetsIcon";
 import { MinimizeMenuIcon } from "../icons/MinimizeMenuIcon";
 import { OverviewIcon } from "../icons/OverviewIcon";
@@ -24,7 +25,11 @@ const navItems = [
   },
 ];
 
-export function Sidebar() {
+type SidebarProps = {
+  user?: { name?: string | null; email?: string | null };
+};
+
+export function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname();
   const [isMinimized, setIsMinimized] = useState(false);
 
@@ -100,7 +105,44 @@ export function Sidebar() {
           );
         })}
       </div>
-      <div className={cn(isMinimized ? "p-400" : "p-800")}>
+      <div
+        className={cn("flex flex-col gap-400", isMinimized ? "p-400" : "p-800")}
+      >
+        {user && (
+          <form action={signOutAction}>
+            <button
+              type="submit"
+              className={cn(
+                "text-preset-5 text-grey-300 hover:text-grey-100 flex w-full cursor-pointer items-center gap-300 transition-colors duration-200",
+                isMinimized && "justify-center",
+              )}
+              title={
+                isMinimized
+                  ? `Sign out (${user.name ?? user.email})`
+                  : undefined
+              }
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M6 14H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h3M11 11l3-3-3-3M14 8H6"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              {!isMinimized && (
+                <span className="truncate">{user.name ?? user.email}</span>
+              )}
+            </button>
+          </form>
+        )}
         <button
           onClick={() => setIsMinimized((prev) => !prev)}
           className="text-preset-3 text-grey-300 hover:text-grey-100 flex cursor-pointer items-center gap-400 transition-colors duration-200"
