@@ -1,6 +1,8 @@
 import { auth } from "@/lib/auth/auth";
 import { prisma } from "@/lib/db/prisma";
+import type { Category } from "@/generated/prisma/enums";
 import { AddBudgetModal } from "./_components/AddBudgetModal";
+import { BudgetList } from "./_components/BudgetList";
 
 export default async function BudgetsPage() {
   const session = await auth();
@@ -8,11 +10,59 @@ export default async function BudgetsPage() {
 
   const budgets = await prisma.budget.findMany({
     where: { userId },
-    select: { theme: true, category: true },
+    orderBy: { createdAt: "asc" },
   });
 
   const usedThemes = budgets.map((b) => b.theme);
   const usedCategories = budgets.map((b) => b.category);
+
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const [monthTransactions, allCategoryTransactions] = await Promise.all([
+    prisma.transaction.findMany({
+      where: {
+        userId,
+        category: { in: usedCategories },
+        date: { gte: startOfMonth },
+        amount: { lt: 0 },
+      },
+      select: { category: true, amount: true },
+    }),
+    prisma.transaction.findMany({
+      where: { userId, category: { in: usedCategories } },
+      orderBy: { date: "desc" },
+      select: {
+        id: true,
+        name: true,
+        amount: true,
+        date: true,
+        avatar: true,
+        category: true,
+      },
+    }),
+  ]);
+
+  const spentByCategory = Object.fromEntries(
+    usedCategories.map((cat) => [
+      cat,
+      Math.abs(
+        monthTransactions
+          .filter((t) => t.category === cat)
+          .reduce((sum, t) => sum + t.amount, 0),
+      ),
+    ]),
+  ) as Record<Category, number>;
+
+  const latestByCategory = Object.fromEntries(
+    usedCategories.map((cat) => [
+      cat,
+      allCategoryTransactions.filter((t) => t.category === cat).slice(0, 3),
+    ]),
+  ) as Record<
+    Category,
+    { id: string; name: string; amount: number; date: Date; avatar: string }[]
+  >;
 
   return (
     <div className="p-400 lg:p-1000">
@@ -23,7 +73,7 @@ export default async function BudgetsPage() {
           usedCategories={usedCategories}
         />
       </div>
-      {budgets.length === 0 && (
+      {budgets.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-400 rounded-2xl bg-white px-400 py-[80px] text-center">
           <svg
             width="48"
@@ -46,11 +96,13 @@ export default async function BudgetsPage() {
             </p>
           </div>
         </div>
+      ) : (
+        <BudgetList
+          budgets={budgets}
+          spentByCategory={spentByCategory}
+          latestByCategory={latestByCategory}
+        />
       )}
-      <div>
-        {/* Spending Summary */}
-        {/* Budgets List */}
-      </div>
     </div>
   );
 }
