@@ -5,15 +5,42 @@ import { TransactionList } from "./_components/TransactionList";
 import { TransactionPagination } from "./_components/TransactionPagination";
 import { TransactionSearch } from "./_components/TransactionSearch";
 import { TransactionCategoryFilter } from "./_components/TransactionCategoryFilter";
+import { TransactionSort, type SortKey } from "./_components/TransactionSort";
 
 const PER_PAGE = 10;
 
+const ORDER_BY: Record<
+  SortKey,
+  { date?: "asc" | "desc"; name?: "asc" | "desc"; amount?: "asc" | "desc" }
+> = {
+  latest: { date: "desc" },
+  oldest: { date: "asc" },
+  az: { name: "asc" },
+  za: { name: "desc" },
+  highest: { amount: "desc" },
+  lowest: { amount: "asc" },
+};
+
+const VALID_SORTS = new Set<SortKey>([
+  "latest",
+  "oldest",
+  "az",
+  "za",
+  "highest",
+  "lowest",
+]);
+
 type Props = {
-  searchParams: Promise<{ page?: string; search?: string; category?: string }>;
+  searchParams: Promise<{
+    page?: string;
+    search?: string;
+    category?: string;
+    sort?: string;
+  }>;
 };
 
 export default async function TransactionsPage({ searchParams }: Props) {
-  const [session, { page, search, category }] = await Promise.all([
+  const [session, { page, search, category, sort }] = await Promise.all([
     auth(),
     searchParams,
   ]);
@@ -24,6 +51,8 @@ export default async function TransactionsPage({ searchParams }: Props) {
     category && VALID_CATEGORIES.includes(category as never)
       ? (category as (typeof VALID_CATEGORIES)[number])
       : undefined;
+  const sortKey: SortKey =
+    sort && VALID_SORTS.has(sort as SortKey) ? (sort as SortKey) : "latest";
 
   const where = {
     userId,
@@ -36,7 +65,7 @@ export default async function TransactionsPage({ searchParams }: Props) {
   const [transactions, total] = await Promise.all([
     prisma.transaction.findMany({
       where,
-      orderBy: { date: "desc" },
+      orderBy: ORDER_BY[sortKey],
       skip: (currentPage - 1) * PER_PAGE,
       take: PER_PAGE,
     }),
@@ -52,6 +81,12 @@ export default async function TransactionsPage({ searchParams }: Props) {
         <div className="mb-600 flex items-center gap-400">
           <TransactionSearch />
           <div className="ml-auto flex items-center gap-300">
+            <span className="text-preset-4 text-grey-500 whitespace-nowrap">
+              Sort by
+            </span>
+            <div className="w-[114px]">
+              <TransactionSort />
+            </div>
             <span className="text-preset-4 text-grey-500 whitespace-nowrap">
               Category
             </span>
