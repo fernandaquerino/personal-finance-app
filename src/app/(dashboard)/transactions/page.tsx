@@ -80,19 +80,16 @@ export default async function TransactionsPage({ searchParams }: Props) {
     <div className="p-400 lg:p-1000">
       <h1 className="text-preset-1 text-grey-900 mb-800">Transactions</h1>
       <div className="rounded-2xl bg-white p-400 lg:p-800">
-        <div className="mb-600 flex items-center gap-300">
-          {/* Search: grows on mobile, capped on desktop */}
-          <div className="min-w-0 flex-1 sm:max-w-[320px] sm:flex-none">
+        <div className="mb-600 flex items-center gap-600">
+          <div className="w-full min-w-0 flex-1 sm:max-w-[320px] sm:flex-none">
             <TransactionSearch />
           </div>
 
-          {/* Mobile: icon-only buttons */}
-          <div className="flex shrink-0 items-center gap-200 sm:hidden">
+          <div className="flex shrink-0 items-center gap-600 sm:hidden">
             <TransactionSortMobile />
             <TransactionCategoryFilterMobile />
           </div>
 
-          {/* Desktop: labeled selects */}
           <div className="ml-auto hidden items-center gap-300 sm:flex">
             <span className="text-preset-4 text-grey-500 whitespace-nowrap">
               Sort by
