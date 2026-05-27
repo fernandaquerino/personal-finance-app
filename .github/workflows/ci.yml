@@ -60,6 +60,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
 
+      - run: npx prisma generate
+
       - run: npm test
 
   build:
