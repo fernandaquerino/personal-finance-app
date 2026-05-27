@@ -113,3 +113,45 @@ export async function deletePot(id: string): Promise<{ success: true }> {
   revalidatePath("/pots");
   return { success: true };
 }
+
+export type AddMoneyResult =
+  | { success: true }
+  | { success: false; error?: string };
+
+export async function addMoneyToPot(
+  input: AddMoneyInput,
+): Promise<AddMoneyResult> {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
+  const parsed = addMoneySchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues[0]?.message,
+    };
+  }
+
+  const { id, amount } = parsed.data;
+
+  const pot = await prisma.pot.findFirst({
+    where: { id, userId: session.user.id },
+  });
+
+  if (!pot) throw new Error("Pot not found");
+
+  if (pot.total + amount > pot.target) {
+    return {
+      success: false,
+      error: `Amount exceeds target. You can add at most $${(pot.target - pot.total).toFixed(2)}.`,
+    };
+  }
+
+  await prisma.pot.update({
+    where: { id },
+    data: { total: { increment: amount } },
+  });
+
+  revalidatePath("/pots");
+  return { success: true };
+}

@@ -23,6 +23,7 @@ export function PotCard({ pot, usedThemes }: Props) {
   const themeColor = THEME_COLORS[theme];
   const progress = Math.min(100, (total / target) * 100);
   const [addMoneyOpen, setAddMoneyOpen] = useState(false);
+  const isFull = total >= target;
 
   return (
     <div className="rounded-2xl bg-white p-500">
@@ -68,7 +69,11 @@ export function PotCard({ pot, usedThemes }: Props) {
 
       {/* Footer */}
       <div className="flex gap-400">
-        <Button variant="secondary" onClick={() => setAddMoneyOpen(true)}>
+        <Button
+          variant="secondary"
+          onClick={() => setAddMoneyOpen(true)}
+          disabled={isFull}
+        >
           + Add Money
         </Button>
         <Button variant="secondary">Withdraw</Button>
