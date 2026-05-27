@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db/prisma";
 import type { Category } from "@/generated/prisma/enums";
 import { AddBudgetModal } from "./_components/AddBudgetModal";
 import { BudgetList } from "./_components/BudgetList";
+import { BudgetDonutChart } from "./_components/BudgetDonutChart";
 
 export default async function BudgetsPage() {
   const session = await auth();
@@ -97,11 +98,17 @@ export default async function BudgetsPage() {
           </div>
         </div>
       ) : (
-        <BudgetList
-          budgets={budgets}
-          spentByCategory={spentByCategory}
-          latestByCategory={latestByCategory}
-        />
+        <div className="grid grid-cols-1 items-start gap-300 lg:grid-cols-[2fr_3fr]">
+          <BudgetDonutChart
+            budgets={budgets}
+            spentByCategory={spentByCategory}
+          />
+          <BudgetList
+            budgets={budgets}
+            spentByCategory={spentByCategory}
+            latestByCategory={latestByCategory}
+          />
+        </div>
       )}
     </div>
   );
