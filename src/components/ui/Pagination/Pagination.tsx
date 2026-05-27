@@ -24,6 +24,25 @@ function getPageRange(
   return items;
 }
 
+function getMobilePageRange(
+  currentPage: number,
+  totalPages: number,
+): PageItem[] {
+  if (totalPages <= 3) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  if (currentPage <= 2) {
+    return [1, 2, "ellipsis", totalPages];
+  }
+
+  if (currentPage >= totalPages - 1) {
+    return [1, "ellipsis", totalPages - 1, totalPages];
+  }
+
+  return [1, "ellipsis", currentPage, totalPages - 1];
+}
+
 const baseButton =
   "flex items-center justify-center rounded-lg border text-preset-5-bold transition-colors duration-150 h-[40px] min-w-[40px] cursor-pointer disabled:cursor-not-allowed disabled:opacity-40";
 
@@ -46,7 +65,7 @@ export function Pagination({
   if (totalPages <= 1) return null;
 
   const desktopPages = getPageRange(currentPage, totalPages, 2);
-  const mobilePages = getPageRange(currentPage, totalPages, 1);
+  const mobilePages = getMobilePageRange(currentPage, totalPages);
 
   const prevDisabled = currentPage === 1;
   const nextDisabled = currentPage === totalPages;
@@ -71,7 +90,7 @@ export function Pagination({
           page === "ellipsis" ? (
             <span
               key={`ellipsis-desktop-${i}`}
-              className="text-preset-5-bold text-grey-500 flex h-[40px] min-w-[40px] items-center justify-center"
+              className={cn(baseButton, inactiveButton, "gap-200 px-300")}
             >
               ...
             </span>
@@ -97,7 +116,7 @@ export function Pagination({
           page === "ellipsis" ? (
             <span
               key={`ellipsis-mobile-${i}`}
-              className="text-preset-5-bold text-grey-500 flex h-[40px] min-w-[40px] items-center justify-center"
+              className={cn(baseButton, inactiveButton, "gap-200 px-300")}
             >
               ...
             </span>

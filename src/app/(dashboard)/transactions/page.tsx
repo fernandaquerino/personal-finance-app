@@ -81,7 +81,7 @@ export default async function TransactionsPage({ searchParams }: Props) {
       <h1 className="text-preset-1 text-grey-900 mb-800">Transactions</h1>
       <div className="rounded-2xl bg-white p-400 lg:p-800">
         <div className="mb-600 flex items-center gap-600">
-          <div className="w-full min-w-0 flex-1 sm:max-w-[320px] sm:flex-none">
+          <div className="min-w-0 flex-1 sm:max-w-[320px] sm:flex-none lg:w-full">
             <TransactionSearch />
           </div>
 
