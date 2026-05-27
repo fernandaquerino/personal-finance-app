@@ -10,6 +10,10 @@ vi.mock("next/image", () => ({
   default: ({ alt }: { alt: string }) => <img alt={alt} />,
 }));
 
+vi.mock("@/server/actions/auth", () => ({
+  signOutAction: vi.fn(),
+}));
+
 import { usePathname } from "next/navigation";
 
 const mockUsePathname = vi.mocked(usePathname);

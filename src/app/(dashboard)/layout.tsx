@@ -13,7 +13,7 @@ export default async function AppLayout({
 
   return (
     <div className="flex h-screen">
-      <Sidebar />
+      <Sidebar user={session.user} />
       <main className="min-h-0 flex-1 overflow-y-auto pb-[96px] lg:pb-0">
         {children}
       </main>
