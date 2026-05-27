@@ -26,7 +26,7 @@ const VALID_INPUT = {
 function authenticated(userId = "user-1") {
   mockAuth.mockResolvedValue({
     user: { id: userId },
-  } as Awaited<ReturnType<typeof auth>>);
+  } as unknown as Awaited<ReturnType<typeof auth>>);
 }
 
 beforeEach(() => {
@@ -37,7 +37,9 @@ beforeEach(() => {
 describe("createTransaction", () => {
   describe("authentication", () => {
     it("throws when the user is not authenticated", async () => {
-      mockAuth.mockResolvedValue(null);
+      mockAuth.mockResolvedValue(
+        null as unknown as Awaited<ReturnType<typeof auth>>,
+      );
 
       await expect(createTransaction(VALID_INPUT)).rejects.toThrow(
         "Unauthorized",
@@ -45,7 +47,7 @@ describe("createTransaction", () => {
     });
 
     it("throws when session has no user id", async () => {
-      mockAuth.mockResolvedValue({ user: {} } as Awaited<
+      mockAuth.mockResolvedValue({ user: {} } as unknown as Awaited<
         ReturnType<typeof auth>
       >);
 
