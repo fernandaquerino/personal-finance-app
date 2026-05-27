@@ -1,9 +1,10 @@
 import Link from "next/link";
 import type { BudgetModel as Budget } from "@/generated/prisma/models";
-import type { Category } from "@/generated/prisma/enums";
+import type { Category, Theme } from "@/generated/prisma/enums";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { THEME_COLORS } from "@/lib/themes";
 import { formatCurrency, formatDate, getInitials } from "@/lib/format";
+import { BudgetCardActions } from "./BudgetCardActions";
 
 type Transaction = {
   id: string;
@@ -17,6 +18,7 @@ type Props = {
   budget: Budget;
   spent: number;
   latestTransactions: Transaction[];
+  usedThemes: Theme[];
 };
 
 const fmt = (amount: number) =>
@@ -24,7 +26,12 @@ const fmt = (amount: number) =>
     amount,
   );
 
-export function BudgetCard({ budget, spent, latestTransactions }: Props) {
+export function BudgetCard({
+  budget,
+  spent,
+  latestTransactions,
+  usedThemes,
+}: Props) {
   const { category, maximum, theme } = budget;
   const themeColor = THEME_COLORS[theme];
   const remaining = Math.max(0, maximum - spent);
@@ -43,6 +50,7 @@ export function BudgetCard({ budget, spent, latestTransactions }: Props) {
           />
           <h2 className="text-preset-2 text-grey-900">{categoryLabel}</h2>
         </div>
+        <BudgetCardActions budget={budget} usedThemes={usedThemes} />
       </div>
 
       {/* Maximum */}
