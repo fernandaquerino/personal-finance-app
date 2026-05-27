@@ -1,8 +1,12 @@
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import type { PotModel as Pot } from "@/generated/prisma/models";
 import { THEME_COLORS } from "@/lib/themes";
 import { PotCardActions } from "./PotCardActions";
 import type { Theme } from "@/generated/prisma/enums";
+import { AddMoneyModal } from "./AddMoneyModal";
 
 type Props = {
   pot: Pot;
@@ -18,6 +22,7 @@ export function PotCard({ pot, usedThemes }: Props) {
   const { name, theme, target, total } = pot;
   const themeColor = THEME_COLORS[theme];
   const progress = Math.min(100, (total / target) * 100);
+  const [addMoneyOpen, setAddMoneyOpen] = useState(false);
 
   return (
     <div className="rounded-2xl bg-white p-500">
@@ -35,7 +40,6 @@ export function PotCard({ pot, usedThemes }: Props) {
       </div>
 
       {/* Total Saved */}
-
       <div className="mb-400 flex items-center justify-between">
         <p className="text-preset-4 text-gray-500">Total Saved</p>
         <p className="text-preset-1 text-grey-900">{fmt(total)}</p>
@@ -51,20 +55,30 @@ export function PotCard({ pot, usedThemes }: Props) {
             aria-valuenow={Math.round(progress)}
             aria-valuemin={0}
             aria-valuemax={100}
-            aria-label={`${Math.round(progress)}% of budget spent`}
+            aria-label={`${Math.round(progress)}% of target saved`}
           />
         </div>
         <div className="flex items-center justify-between">
-          <p className="text-preset-5-bold text-gray-500">{progress}%</p>
+          <p className="text-preset-5-bold text-gray-500">
+            {progress.toFixed(2)}%
+          </p>
           <p className="text-preset-5 text-grey-500">Target of {fmt(target)}</p>
         </div>
       </div>
 
       {/* Footer */}
       <div className="flex gap-400">
-        <Button variant="secondary">+ Add Money</Button>
+        <Button variant="secondary" onClick={() => setAddMoneyOpen(true)}>
+          + Add Money
+        </Button>
         <Button variant="secondary">Withdraw</Button>
       </div>
+
+      <AddMoneyModal
+        pot={pot}
+        open={addMoneyOpen}
+        onOpenChange={setAddMoneyOpen}
+      />
     </div>
   );
 }
