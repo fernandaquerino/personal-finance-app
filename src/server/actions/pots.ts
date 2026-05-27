@@ -6,44 +6,57 @@ import { auth } from "@/lib/auth/auth";
 import { prisma } from "@/lib/db/prisma";
 import { Theme } from "@/generated/prisma/enums";
 
+const potNameSchema = z
+  .string()
+  .min(1, "Name is required")
+  .max(30, "Name must be 30 characters or less");
+
+const potTargetSchema = z.number().positive("Target must be greater than zero");
+
 const createPotSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Name is required")
-    .max(30, "Name must be 30 characters or less"),
-  target: z.number().positive("Target must be greater than zero"),
+  name: potNameSchema,
+  target: potTargetSchema,
   theme: z.enum(Theme),
 });
 
-export type CreatePotInput = z.infer<typeof createPotSchema>;
+const updatePotSchema = z.object({
+  id: z.string().min(1),
+  name: potNameSchema,
+  target: potTargetSchema,
+  theme: z.enum(Theme),
+});
 
-export type CreatePotResult =
+const addMoneySchema = z.object({
+  id: z.string().min(1),
+  amount: z.number().positive("Amount must be greater than zero"),
+});
+
+export type CreatePotInput = z.infer<typeof createPotSchema>;
+export type UpdatePotInput = z.infer<typeof updatePotSchema>;
+export type AddMoneyInput = z.infer<typeof addMoneySchema>;
+
+export type PotActionResult =
   | { success: true }
-  | {
-      success: false;
-      fieldErrors?: Partial<Record<keyof CreatePotInput, string[]>>;
-    };
+  | { success: false; error?: string; fieldErrors?: Record<string, string[]> };
 
 export async function createPot(
   input: CreatePotInput,
-): Promise<CreatePotResult> {
+): Promise<PotActionResult> {
   const session = await auth();
-  if (!session?.user?.id) {
-    throw new Error("Unauthorized");
-  }
+  if (!session?.user?.id) throw new Error("Unauthorized");
 
   const parsed = createPotSchema.safeParse(input);
   if (!parsed.success) {
     return {
       success: false,
-      fieldErrors: z.flattenError(parsed.error).fieldErrors as Partial<
-        Record<keyof CreatePotInput, string[]>
+      fieldErrors: z.flattenError(parsed.error).fieldErrors as Record<
+        string,
+        string[]
       >,
     };
   }
 
   const { name, target, theme } = parsed.data;
-
   await prisma.pot.create({
     data: { name, target, theme, userId: session.user.id },
   });
@@ -51,18 +64,6 @@ export async function createPot(
   revalidatePath("/pots");
   return { success: true };
 }
-
-const updatePotSchema = z.object({
-  id: z.string().min(1),
-  name: z
-    .string()
-    .min(1, "Name is required")
-    .max(30, "Name must be 30 characters or less"),
-  target: z.number().positive("Target must be greater than zero"),
-  theme: z.enum(Theme),
-});
-
-export type UpdatePotInput = z.infer<typeof updatePotSchema>;
 
 export type UpdatePotResult =
   | { success: true }
@@ -90,7 +91,6 @@ export async function updatePot(
   }
 
   const { id, name, target, theme } = parsed.data;
-
   await prisma.pot.update({
     where: { id, userId: session.user.id },
     data: { name, target, theme },
@@ -108,6 +108,48 @@ export async function deletePot(id: string): Promise<{ success: true }> {
 
   await prisma.pot.delete({
     where: { id, userId: session.user.id },
+  });
+
+  revalidatePath("/pots");
+  return { success: true };
+}
+
+export type AddMoneyResult =
+  | { success: true }
+  | { success: false; error?: string };
+
+export async function addMoneyToPot(
+  input: AddMoneyInput,
+): Promise<AddMoneyResult> {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
+  const parsed = addMoneySchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues[0]?.message,
+    };
+  }
+
+  const { id, amount } = parsed.data;
+
+  const pot = await prisma.pot.findFirst({
+    where: { id, userId: session.user.id },
+  });
+
+  if (!pot) throw new Error("Pot not found");
+
+  if (pot.total + amount > pot.target) {
+    return {
+      success: false,
+      error: `Amount exceeds target. You can add at most $${(pot.target - pot.total).toFixed(2)}.`,
+    };
+  }
+
+  await prisma.pot.update({
+    where: { id },
+    data: { total: { increment: amount } },
   });
 
   revalidatePath("/pots");
