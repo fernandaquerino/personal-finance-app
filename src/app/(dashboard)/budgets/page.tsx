@@ -52,14 +52,14 @@ export default async function BudgetsPage() {
           .reduce((sum, t) => sum + t.amount, 0),
       ),
     ]),
-  ) as Record<Category, number>;
+  ) as unknown as Record<Category, number>;
 
   const latestByCategory = Object.fromEntries(
     usedCategories.map((cat) => [
       cat,
       allCategoryTransactions.filter((t) => t.category === cat).slice(0, 3),
     ]),
-  ) as Record<
+  ) as unknown as Record<
     Category,
     { id: string; name: string; amount: number; date: Date; avatar: string }[]
   >;
