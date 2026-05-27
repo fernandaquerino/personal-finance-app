@@ -155,3 +155,52 @@ export async function addMoneyToPot(
   revalidatePath("/pots");
   return { success: true };
 }
+
+const withdrawSchema = z.object({
+  id: z.string().min(1),
+  amount: z.number().positive("Amount must be greater than zero"),
+});
+
+export type WithdrawInput = z.infer<typeof withdrawSchema>;
+
+export type WithdrawResult =
+  | { success: true }
+  | { success: false; error?: string };
+
+export async function withdrawFromPot(
+  input: WithdrawInput,
+): Promise<WithdrawResult> {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
+  const parsed = withdrawSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      error: parsed.error.issues[0]?.message,
+    };
+  }
+
+  const { id, amount } = parsed.data;
+
+  const pot = await prisma.pot.findFirst({
+    where: { id, userId: session.user.id },
+  });
+
+  if (!pot) throw new Error("Pot not found");
+
+  if (amount > pot.total) {
+    return {
+      success: false,
+      error: `Amount exceeds savings. You can withdraw at most $${pot.total.toFixed(2)}.`,
+    };
+  }
+
+  await prisma.pot.update({
+    where: { id },
+    data: { total: { decrement: amount } },
+  });
+
+  revalidatePath("/pots");
+  return { success: true };
+}

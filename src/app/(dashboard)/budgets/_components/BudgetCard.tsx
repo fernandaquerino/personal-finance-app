@@ -3,7 +3,12 @@ import type { BudgetModel as Budget } from "@/generated/prisma/models";
 import type { Category, Theme } from "@/generated/prisma/enums";
 import { CATEGORY_LABELS } from "@/lib/categories";
 import { THEME_COLORS } from "@/lib/themes";
-import { formatCurrency, formatDate, getInitials } from "@/lib/format";
+import {
+  formatAmount,
+  formatCurrency,
+  formatDate,
+  getInitials,
+} from "@/lib/format";
 import { BudgetCardActions } from "./BudgetCardActions";
 
 type Transaction = {
@@ -20,11 +25,6 @@ type Props = {
   latestTransactions: Transaction[];
   usedThemes: Theme[];
 };
-
-const fmt = (amount: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-    amount,
-  );
 
 export function BudgetCard({
   budget,
@@ -55,7 +55,7 @@ export function BudgetCard({
 
       {/* Maximum */}
       <p className="text-preset-4 text-grey-500 mb-300">
-        Maximum of {fmt(maximum)}
+        Maximum of {formatAmount(maximum)}
       </p>
 
       {/* Progress bar */}
@@ -75,11 +75,15 @@ export function BudgetCard({
       <div className="mb-500 grid grid-cols-2 gap-400">
         <div className="border-l-4 pl-300" style={{ borderColor: themeColor }}>
           <p className="text-preset-5 text-grey-500 mb-100">Spent</p>
-          <p className="text-preset-4-bold text-grey-900">{fmt(spent)}</p>
+          <p className="text-preset-4-bold text-grey-900">
+            {formatAmount(spent)}
+          </p>
         </div>
         <div className="border-beige-500 border-l-4 pl-300">
           <p className="text-preset-5 text-grey-500 mb-100">Remaining</p>
-          <p className="text-preset-4-bold text-grey-900">{fmt(remaining)}</p>
+          <p className="text-preset-4-bold text-grey-900">
+            {formatAmount(remaining)}
+          </p>
         </div>
       </div>
 
