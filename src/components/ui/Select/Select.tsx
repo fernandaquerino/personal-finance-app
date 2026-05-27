@@ -22,6 +22,8 @@ interface SelectProps {
   disabled?: boolean;
   id?: string;
   icon?: ReactNode;
+  side?: RadixSelect.SelectContentProps['side'];
+  avoidCollisions?: boolean;
 }
 
 function CaretDown() {
@@ -74,6 +76,8 @@ export function Select({
   disabled,
   id,
   icon,
+  side = 'bottom',
+  avoidCollisions = true,
 }: SelectProps) {
   const selectId = id ?? label?.toLowerCase().replace(/\s+/g, '-');
   const hasError = Boolean(error);
@@ -118,6 +122,8 @@ export function Select({
           <RadixSelect.Content
             position="popper"
             sideOffset={4}
+            side={side}
+            avoidCollisions={avoidCollisions}
             className={cn(
               'z-50 w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg bg-white shadow-lg',
               'data-[state=open]:animate-in data-[state=closed]:animate-out',
@@ -125,7 +131,7 @@ export function Select({
               'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95'
             )}
           >
-            <RadixSelect.Viewport className="py-100">
+            <RadixSelect.Viewport className="max-h-[240px] overflow-y-auto py-100">
               {options.map((option) => (
                 <RadixSelect.Item
                   key={option.value}
