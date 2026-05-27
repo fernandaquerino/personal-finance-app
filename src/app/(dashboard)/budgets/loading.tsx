@@ -1,4 +1,7 @@
-import { BudgetListSkeleton } from "./_components/BudgetListSkeleton";
+import {
+  BudgetListSkeleton,
+  BudgetDonutSkeleton,
+} from "./_components/BudgetListSkeleton";
 
 export default function BudgetsLoading() {
   return (
@@ -7,7 +10,10 @@ export default function BudgetsLoading() {
         <h1 className="text-preset-1 text-grey-900">Budgets</h1>
         <div className="bg-grey-900 h-[40px] w-[140px] animate-pulse rounded-lg" />
       </div>
-      <BudgetListSkeleton />
+      <div className="grid grid-cols-1 items-start gap-300 lg:grid-cols-[2fr_3fr]">
+        <BudgetDonutSkeleton />
+        <BudgetListSkeleton />
+      </div>
     </div>
   );
 }

@@ -54,6 +54,35 @@ function BudgetCardSkeleton() {
   );
 }
 
+export function BudgetDonutSkeleton() {
+  return (
+    <div className="rounded-2xl bg-white p-500">
+      {/* Donut */}
+      <div className="bg-grey-100 mx-auto mb-400 h-[240px] w-[240px] animate-pulse rounded-full" />
+
+      {/* Spending Summary heading */}
+      <div className="bg-grey-100 mb-300 h-[20px] w-[160px] animate-pulse rounded" />
+
+      {/* Summary rows */}
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div
+          key={i}
+          className="border-grey-100 flex items-center justify-between border-b py-300 last:border-none"
+        >
+          <div className="flex items-center gap-200">
+            <div className="bg-grey-100 h-[21px] w-[4px] animate-pulse rounded-full" />
+            <div className="bg-grey-100 h-[14px] w-[100px] animate-pulse rounded" />
+          </div>
+          <div className="flex items-center gap-200">
+            <div className="bg-grey-100 h-[14px] w-[50px] animate-pulse rounded" />
+            <div className="bg-grey-100 h-[12px] w-[60px] animate-pulse rounded" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function BudgetListSkeleton() {
   return (
     <div className="flex flex-col gap-300">
