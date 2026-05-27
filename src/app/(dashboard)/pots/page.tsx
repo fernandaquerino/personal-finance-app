@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth/auth";
 import { prisma } from "@/lib/db/prisma";
+import { AddPotModal } from "./_components/AddPotModal";
 
 export default async function PotsPage() {
   const session = await auth();
@@ -10,10 +11,13 @@ export default async function PotsPage() {
     orderBy: { createdAt: "asc" },
   });
 
+  const usedThemes = pots.map((p) => p.theme);
+
   return (
     <div className="p-400 lg:p-1000">
       <div className="mb-800 flex items-center justify-between">
         <h1 className="text-preset-1 text-grey-900">Pots</h1>
+        <AddPotModal usedThemes={usedThemes} />
       </div>
       {pots.length === 0 && (
         <div className="flex flex-col items-center justify-center gap-400 rounded-2xl bg-white px-400 py-[80px] text-center">
