@@ -111,7 +111,7 @@ export function BudgetCard({ budget, spent, latestTransactions }: Props) {
                 key={t.id}
                 className={`flex items-center justify-between py-300 ${
                   i < latestTransactions.length - 1
-                    ? "border-grey-100 border-b"
+                    ? "border-grey-500/15 border-b"
                     : ""
                 }`}
               >
