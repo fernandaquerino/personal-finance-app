@@ -38,12 +38,14 @@ export function TransactionSearch() {
   }, [value]);
 
   return (
-    <Input
-      aria-label="Search transactions by name"
-      placeholder="Search transaction"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      icon={<SearchIcon className="h-4 w-4" />}
-    />
+    <div className="w-full max-w-[320px]">
+      <Input
+        aria-label="Search transactions by name"
+        placeholder="Search transaction"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        icon={<SearchIcon className="h-4 w-4" />}
+      />
+    </div>
   );
 }
