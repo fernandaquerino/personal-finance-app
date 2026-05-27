@@ -30,7 +30,7 @@ function CustomTooltip({ active, payload }: TooltipProps) {
   return (
     <div className="bg-grey-900 rounded-lg px-300 py-200 shadow-md">
       <p className="text-preset-5-bold text-white">{item.label}</p>
-      <p className="text-preset-5 text-white">{formatCurrency(item.spent)}</p>
+      <p className="text-preset-5 text-white">{fmt(item.spent)}</p>
     </div>
   );
 }
@@ -91,11 +91,9 @@ export function BudgetDonutChart({ budgets, spentByCategory }: Props) {
 
         {/* Center text */}
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-100">
-          <p className="text-preset-1 text-grey-900">
-            {formatCurrency(totalSpent)}
-          </p>
+          <p className="text-preset-1 text-grey-900">{fmt(totalSpent)}</p>
           <p className="text-preset-5 text-grey-500">
-            of {formatCurrency(totalLimit)} limit
+            of {fmt(totalLimit)} limit
           </p>
         </div>
       </div>
@@ -118,10 +116,10 @@ export function BudgetDonutChart({ budgets, spentByCategory }: Props) {
             </div>
             <div className="flex items-center gap-200">
               <span className="text-preset-4-bold text-grey-900">
-                {formatCurrency(item.spent)}
+                {fmt(item.spent)}
               </span>
               <span className="text-preset-5 text-grey-500">
-                of {formatCurrency(item.maximum)}
+                of {fmt(item.maximum)}
               </span>
             </div>
           </li>
