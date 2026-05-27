@@ -107,6 +107,20 @@ export async function updateBudget(
   return { success: true };
 }
 
+export async function deleteBudget(id: string): Promise<{ success: true }> {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("Unauthorized");
+  }
+
+  await prisma.budget.delete({
+    where: { id, userId: session.user.id },
+  });
+
+  revalidatePath("/budgets");
+  return { success: true };
+}
+
 function isPrismaUniqueError(err: unknown): boolean {
   return (
     typeof err === "object" &&

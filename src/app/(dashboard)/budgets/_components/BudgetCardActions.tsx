@@ -5,6 +5,7 @@ import type { Theme } from "@/generated/prisma/enums";
 import type { BudgetModel as Budget } from "@/generated/prisma/models";
 import { DropdownMenu } from "@/components/ui/DropdownMenu/DropdownMenu";
 import { EditBudgetModal } from "./EditBudgetModal";
+import { DeleteBudgetModal } from "./DeleteBudgetModal";
 
 type Props = {
   budget: Budget;
@@ -13,7 +14,7 @@ type Props = {
 
 export function BudgetCardActions({ budget, usedThemes }: Props) {
   const [editOpen, setEditOpen] = useState(false);
-  const [_deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   return (
     <>
@@ -51,7 +52,11 @@ export function BudgetCardActions({ budget, usedThemes }: Props) {
         open={editOpen}
         onOpenChange={setEditOpen}
       />
-      {/* DeleteBudgetModal — FIN-55 */}
+      <DeleteBudgetModal
+        budget={budget}
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+      />
     </>
   );
 }

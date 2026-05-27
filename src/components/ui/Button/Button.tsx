@@ -1,57 +1,60 @@
-import { cva, type VariantProps } from 'class-variance-authority';
-import type { ButtonHTMLAttributes } from 'react';
-import { cn } from '@/lib/cn';
+import { cva, type VariantProps } from "class-variance-authority";
+import type { ButtonHTMLAttributes } from "react";
+import { cn } from "@/lib/cn";
 
 const buttonVariants = cva(
   [
-    'inline-flex cursor-pointer items-center justify-center gap-200 whitespace-nowrap rounded-lg',
-    'transition-colors duration-150',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-    'disabled:pointer-events-none disabled:cursor-not-allowed',
-    'w-full',
+    "inline-flex cursor-pointer items-center justify-center gap-200 whitespace-nowrap rounded-lg",
+    "transition-colors duration-150",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+    "disabled:pointer-events-none disabled:cursor-not-allowed",
+    "w-full",
   ],
   {
     variants: {
       variant: {
         primary: [
-          'bg-grey-900 text-white',
-          'hover:bg-grey-900/80',
-          'focus-visible:ring-grey-900',
-          'disabled:bg-grey-500',
+          "bg-grey-900 text-white",
+          "hover:bg-grey-900/80",
+          "focus-visible:ring-grey-900",
+          "disabled:bg-grey-500",
         ],
         secondary: [
-          'border border-transparent bg-beige-100 text-grey-900',
-          'hover:border-beige-500 hover:bg-white',
-          'focus-visible:ring-grey-900',
-          'disabled:border-grey-300 disabled:text-grey-300',
+          "border border-transparent bg-beige-100 text-grey-900",
+          "hover:border-beige-500 hover:bg-white",
+          "focus-visible:ring-grey-900",
+          "disabled:border-grey-300 disabled:text-grey-300",
         ],
         tertiary: [
-          'bg-transparent text-grey-500 gap-300',
-          'hover:text-grey-900',
-          'focus-visible:ring-grey-500',
-          'disabled:text-grey-300',
+          "bg-transparent text-grey-500 gap-300",
+          "hover:text-grey-900",
+          "focus-visible:ring-grey-500",
+          "disabled:text-grey-300",
         ],
         destructive: [
-          'bg-red text-white',
-          'hover:bg-red/80',
-          'focus-visible:ring-red',
-          'disabled:bg-red/50',
+          "bg-red text-white",
+          "hover:bg-red/80",
+          "focus-visible:ring-red",
+          "disabled:bg-red/50",
         ],
       },
       size: {
-        sm: 'text-preset-5-bold py-300 px-400',
-        md: 'text-preset-4-bold p-400',
+        sm: "text-preset-5-bold py-300 px-400",
+        md: "text-preset-4-bold p-400",
       },
     },
     defaultVariants: {
-      variant: 'primary',
-      size: 'md',
+      variant: "primary",
+      size: "md",
     },
-  }
+  },
 );
 
 interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
+  extends
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  hasIcon?: boolean;
   loading?: boolean;
 }
 
@@ -82,7 +85,14 @@ function Spinner() {
       viewBox="0 0 24 24"
       aria-hidden="true"
     >
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <circle
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="4"
+      />
       <path
         className="opacity-75"
         fill="currentColor"
@@ -96,6 +106,7 @@ export function Button({
   className,
   variant,
   size,
+  hasIcon = false,
   loading = false,
   disabled,
   children,
@@ -110,7 +121,7 @@ export function Button({
     >
       {loading && <Spinner />}
       {children}
-      {variant === 'tertiary' && <ChevronRight />}
+      {variant === "tertiary" && hasIcon && <ChevronRight />}
     </button>
   );
 }
