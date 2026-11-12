@@ -3,7 +3,7 @@
 A full-stack personal finance application for tracking budgets, saving pots,
 transactions, and recurring bills.
 
-> **Status:** 🚧 In progress (Sprint 2 / 6)
+> **Status:** 🚧 In progress (Sprints 0–3 of 6 done; next: Sprint 4, overview and recurring bills). See [`docs/BACKLOG.md`](./docs/BACKLOG.md).
 
 > **Live demo:** https://personal-finance-app-five-lyart.vercel.app/
 
@@ -36,16 +36,20 @@ Every decision is documented in [`docs/DECISIONS.md`](./docs/DECISIONS.md).
 
 ## Features
 
+**Done**
+
 - ✅ Authentication (signup, login, logout)
-- ✅ Overview dashboard with balance, income and expenses summary
 - ✅ Transactions list with search, filter, sort and pagination
 - ✅ Add new transactions
 - ✅ Budgets with CRUD, donut chart and spending progress
 - ✅ Saving pots with CRUD, add and withdraw money
-- ✅ Recurring bills with status (paid, upcoming, due soon)
-- ✅ Fully keyboard navigable
-- ✅ Responsive (mobile, tablet, desktop)
-- ✅ Accessibility audit (Lighthouse score 100)
+- ✅ Overview summary cards (current balance, monthly income and expenses) and a pots preview
+
+**Planned** (tracked in [`docs/BACKLOG.md`](./docs/BACKLOG.md))
+
+- ⏳ Complete overview dashboard (budgets, transactions and bills previews) (Sprint 4)
+- ⏳ Recurring bills with status (paid, upcoming, due soon) (Sprint 4)
+- ⏳ Full keyboard navigation and responsive review, accessibility and Lighthouse audit (Sprint 5)
 
 ---
 
